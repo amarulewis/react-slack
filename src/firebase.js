@@ -10,7 +10,8 @@ var firebaseConfig = {
     storageBucket: "react-slack-clone-e55a8.appspot.com",
     messagingSenderId: "1081625094383",
     appId: "1:1081625094383:web:61ea1e6a467cfee57a931a",
-    measurementId: "G-JP64QD5GB8"
+    measurementId: "G-JP64QD5GB8",
+    databaseURL: "https://react-slack-clone-e55a8-default-rtdb.firebaseio.com/",
   };
 
   firebase.initializeApp(firebaseConfig);
