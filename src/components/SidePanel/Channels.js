@@ -19,6 +19,13 @@ class Channels extends React.Component {
     componentDidMount(){
         this.addListeners();
     }
+    componentWillUnmount(){
+        this.removeListeners();
+    }
+
+    removeListeners = () => {
+        this.state.channelsRef.off()
+    }
 
     addListeners = () => {
         let loadedChannels = [];
@@ -32,7 +39,8 @@ class Channels extends React.Component {
     setFirstChannel = () => {
         const firstChannel = this.state.channels[0]
         if (this.state.firstLoad && this.state.channels.length > 0){
-            this.props.setCurrentChannel(firstChannel)
+            this.props.setCurrentChannel(firstChannel);
+            this.setActiveChannel(firstChannel);
         }
     }
 
@@ -158,7 +166,7 @@ class Channels extends React.Component {
                         <Button color="green" inverted onClick={this.handleSubmit}>
                             <Icon name="checkmark"/> Add
                         </Button>
-                        <Button color="Red" inverted onClick={this.closeModal}>
+                        <Button color="red" inverted onClick={this.closeModal}>
                             <Icon name="remove"/> Cancel
                         </Button>
                     </Modal.Actions>
