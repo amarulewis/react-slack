@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from '../../firebase';
 import React from 'react';
 import {connect} from 'react-redux'
 import {Grid,Header,Icon,Dropdown, Image} from 'semantic-ui-react';
