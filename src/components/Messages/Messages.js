@@ -3,6 +3,8 @@ import MessagesHeader from './MessagesHeader'
 import MessagesForm from './MessagesForm';
 import Message from './Message'
 import {Segment, Comment} from 'semantic-ui-react'
+import {connect} from 'react-redux'
+import { setUserPosts } from '../../actions';
 import firebase from 'firebase';
 
 class Messages extends React.Component {
@@ -63,6 +65,7 @@ class Messages extends React.Component {
                 messagesLoading: false,
             })
             this.countUniqueUsers(loadedMessages)
+            this.countUserPosts(loadedMessages)
         });
     };
     
@@ -133,6 +136,21 @@ class Messages extends React.Component {
         const plural = uniqueUsers.length > 1;
         const numUniqueUsers = `${uniqueUsers.length} user${plural ? 's' : ''}`;
         this.setState({numUniqueUsers})
+    };
+
+    countUserPosts = messages => {
+        let userPosts = messages.reduce((acc, message) => {
+            if(message.user.name in acc){
+                acc[message.user.name].count += 1
+            } else {
+                acc[message.user.name] = {
+                    avatar: message.user.avatar,
+                    count: 1
+                }
+            }
+            return acc;
+        }, {});
+        this.props.setUserPosts(userPosts)
     }
 
     displayMessages = messages => (
@@ -195,4 +213,4 @@ class Messages extends React.Component {
     }
 }
 
-export default Messages
+export default connect(null, {setUserPosts})(Messages)
