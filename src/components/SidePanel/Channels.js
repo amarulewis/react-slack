@@ -2,7 +2,7 @@ import React from 'react'
 import firebase from '../../firebase'
 import {connect} from 'react-redux'
 import { setCurrentChannel,setPrivateChannel } from '../../actions'
-import { Menu, Icon, Modal,Form, Input, Button } from 'semantic-ui-react'
+import { Menu, Icon, Modal,Form, Input, Button,Label } from 'semantic-ui-react'
 
 class Channels extends React.Component {
     state = {
@@ -40,7 +40,7 @@ class Channels extends React.Component {
     removeListeners = () => {
         this.state.channelsRef.off()
     }
-    
+
     addNotificationListener = channelId => {
         this.state.messagesRef.child(channelId).on('value', snap => {
             if(this.state.channel){
@@ -77,6 +77,16 @@ class Channels extends React.Component {
         this.setState({notifications});
     }
 
+    getNotificationCount = channel => {
+        let count = 0;
+
+        this.state.notifications.forEach(notification => {
+            if (notification.id === channel.id){
+                count = notification.count;
+            }
+        });
+    }
+
     setFirstChannel = () => {
         const firstChannel = this.state.channels[0]
         if (this.state.firstLoad && this.state.channels.length > 0){
@@ -91,9 +101,25 @@ class Channels extends React.Component {
 
     changeChannel = channel => {
         this.setActiveChannel(channel)
+        this.clearNotifications();
         this.props.setCurrentChannel(channel)
         this.props.setPrivateChannel(false)
         this.setState({channel})
+    }
+
+    clearNotifications = () => {
+        let index = this.state.notifications.findIndex(
+            notification => notification.id === this.state.channel.id
+        );
+
+        if(index !== -1){
+            let updatedNotifications = [...this.state.notifications];
+            updatedNotifications[index].total = this.state.notificaitons[
+                index
+            ].lastKnownTotal;
+            updatedNotifications[index].count = 0;
+            this.setState({notifications: updatedNotifications})
+        }
     }
 
     displayChannels = channels => (
@@ -106,6 +132,9 @@ class Channels extends React.Component {
                 style={{opacity: 0.7}}
                 active={channel.id === this.state.activeChannel}
             >
+                {this.getNotificationCount(channel) && (
+                    <Label color="red">{this.getNotificationCount(channel)}</Label>
+                )}
                 #{channel.name}
 
             </Menu.Item>
