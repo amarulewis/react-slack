@@ -6,7 +6,8 @@ import {Grid,Header,Icon,Dropdown, Image} from 'semantic-ui-react';
 class UserPanel extends React.Component {
 
     state = {
-        user: this.props.currentUser
+        user: this.props.currentUser,
+        primaryColor: this.props.primaryColor
     }
 
     
@@ -37,10 +38,10 @@ class UserPanel extends React.Component {
 
     render(){
 
-        const {user} = this.state;
+        const {user,primaryColor} = this.state;
 
         return (
-            <Grid style={{background: '#4c3c4c'}}>
+            <Grid style={{background: primaryColor}}>
                 <Grid.Column>
                     <Grid.Row style={{padding: '1.2em', margin: 0}}>
                         {/* App Header*/}
