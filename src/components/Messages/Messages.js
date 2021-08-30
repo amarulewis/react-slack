@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import { setUserPosts } from '../../actions';
 import firebase from 'firebase';
 import Typing from './Typing'
+import Skeleton from './Skeleton';
 
 class Messages extends React.Component {
     state = {
@@ -38,6 +39,18 @@ class Messages extends React.Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(this.messagesEnd){
+            this.scrollToBottom();
+        }
+
+    }
+
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({
+            behavior: 'smooth'
+        })
+    }
     
 
     addListeners = channelId => {
@@ -230,10 +243,21 @@ class Messages extends React.Component {
         ))
     )
 
+    displayMessagesSkeleton = loading => (
+        loading ? (
+            <React.Fragment>
+                {[...Array(10)].map((_,i) => (
+                    <Skeleton key={i}/>
+                ))}
+            </React.Fragment>
+        ) : null
+    )
+
     render() {
         const {messagesRef,messages, channel,user, progressBar, 
             numUniqueUsers, searchTerm, searchResults,isPrivateChannel,
-            searchLoading, isChannelStarred,typingUsers} = this.state
+            searchLoading, isChannelStarred,typingUsers,
+            messagesLoading} = this.state
 
 
         return (
@@ -250,11 +274,13 @@ class Messages extends React.Component {
                 <Segment>
                     <Comment.Group className={progressBar ? 'messages__progress': "messages"}>
                         {/* Messages */}
+                        {this.displayMessagesSkeleton(messagesLoading)}
                         {searchTerm 
                             ? this.displayMessages(searchResults) 
                             : this.displayMessages(messages)}
                             
                             {this.displayTypingUsers(typingUsers)}
+                            <div ref={node => (this.messagesEnd= node)}></div>
                     </Comment.Group>
                 </Segment>
 
