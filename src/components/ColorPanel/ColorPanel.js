@@ -71,11 +71,11 @@ class ColorPanel extends React.Component {
             .catch(err => console.error(err));
     };
 
-    displayUserColors = (colors) => (
+    displayUserColors = colors => (
         colors.length > 0 && colors.map((color,i) => (
             <React.Fragment key={i}>
                 <Divider />
-                <div className=".color__container" onClick={() => this.props.setColors(color.primary,color.secondary)}>
+                <div className="color__container" onClick={() => this.props.setColors(color.primary,color.secondary)}>
                     <div className="color__square" style={{background: color.primary}}>
                         <div className="color__overlay" style={{background: color.secondary}}></div>
                     </div>

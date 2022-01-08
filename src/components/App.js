@@ -12,7 +12,7 @@ import { setCurrentChannel } from '../actions';
 
 const App = ({currentUser,currentChannel,isPrivateChannel,userPosts,
   primaryColor,secondaryColor}) => (
-  <Grid columns="equal" className="app" style={{background: '#eee'}}>
+  <Grid columns="equal" className="app" style={{background: secondaryColor}}>
     <ColorPanel 
       key={currentUser && currentUser.name}
       currentUser={currentUser}

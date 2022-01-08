@@ -28,19 +28,19 @@ class Root extends React.Component {
                 this.props.history.push('/')
             } else {
                 this.props.history.push('/login')
-                clearUser();
+                this.props.clearUser();
             }
         })
     }
 
    render() {
-        return this.props.isLoading ? <Spinner /> : (
+        return this.props.isLoading ? (<Spinner />) : (
         <Switch>
             <Route exact path="/" component={App}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/register" component={Register}/>
         </Switch>
-        )
+        );
     }
 }
 
